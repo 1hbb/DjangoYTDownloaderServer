@@ -1,5 +1,5 @@
 #get latest python docker image
-FROM python:latest 
+FROM python:slim
 
 #create working dir
 RUN mkdir /usr/src/app
