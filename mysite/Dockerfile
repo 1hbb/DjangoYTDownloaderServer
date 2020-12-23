@@ -23,4 +23,4 @@ RUN pip install -r requirements.txt
 #copy project in cureent directory to working directory = /usr/src/app
 COPY . .
 
-
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
