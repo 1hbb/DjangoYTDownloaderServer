@@ -1,13 +1,30 @@
 import youtube_dl
 import time
 from django.http import JsonResponse
+from fake_useragent import UserAgent
+from .RandomProxy import generateRandomProxy
 
 
 def NonYoutubeSites(url):
     video_url = url
     video_audio_streams = []
 
-    ydl = youtube_dl.YoutubeDL({"outtmpl": "%(id)s.%(ext)s"})
+    # get random fake user agent
+    ua = UserAgent()
+
+    # get faket proxy
+    proxy = generateRandomProxy()
+
+    ydl_opts = {
+        "outtmpl": "%(id)s.%(ext)s",
+        "--cookies": "/cookies.txt",
+        "--user-agent": ua,
+        "--proxy": proxy['ip'],
+    }
+    
+    print(proxy['ip'])
+
+    ydl = youtube_dl.YoutubeDL(ydl_opts)
 
     with ydl:
         result = ydl.extract_info(

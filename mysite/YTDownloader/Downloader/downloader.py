@@ -1,16 +1,18 @@
 import youtube_dl
 import time
 from django.http import JsonResponse
+from fake_useragent import UserAgent
+from .RandomProxy import generateRandomProxy
+
+    
 
 
 def video_downloader(url):
     """functions gets youtube video url and retun audio and video download links
-
     Args:
         url (youtube video link): it can be any youtube video url not playlist
-
     Returns:
-    JSON: 
+    JSON:
     title:"HUMORPUNK 2023 TURKEY"
     creator:null
     upload_date:"20201217"
@@ -20,15 +22,31 @@ def video_downloader(url):
     view_count:38515
     like_count:4419
     dislike_count:68
-    thumbnails:	
+    thumbnails:
         url	"https://i.ytimg.com/vi/FxzYifHV1-A/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAEq53Iw-6reQRUVDfo8u-XKEBDOA"
         height	188
         width	336
     """
+
     video_url = url
     video_audio_streams = []
 
-    ydl = youtube_dl.YoutubeDL({"outtmpl": "%(id)s.%(ext)s"})
+    #get random fake user agent
+    ua = UserAgent()
+    
+    #get faket proxy
+    proxy = generateRandomProxy()
+
+    ydl_opts = {
+        "outtmpl": "%(id)s.%(ext)s",
+        "--cookies": "/cookies.txt",
+        "--user-agent": ua,
+        "--proxy": proxy['ip'],
+    }
+
+    ydl = youtube_dl.YoutubeDL(ydl_opts)
+    
+    print(proxy['ip'])
 
     with ydl:
         result = ydl.extract_info(
