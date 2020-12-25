@@ -3,7 +3,6 @@ import time
 from django.http import JsonResponse
 from fake_useragent import UserAgent
 from .RandomProxy import generateRandomProxy
-
     
 
 
@@ -42,6 +41,7 @@ def video_downloader(url):
         "--cookies": "/cookies.txt",
         "--user-agent": ua,
         "--proxy": proxy['ip'],
+        "--no-playlist" : True,
     }
 
     ydl = youtube_dl.YoutubeDL(ydl_opts)
