@@ -36,17 +36,19 @@ def video_downloader(url):
     #get faket proxy
     proxy = generateRandomProxy()
 
+    ytdlProxy = "http://" + proxy['ip'] + ":" + proxy['port']
+
     ydl_opts = {
         "outtmpl": "%(id)s.%(ext)s",
         "--cookies": "/cookies.txt",
         "--user-agent": ua,
-        "--proxy": proxy['ip'],
+        "--proxy": ytdlProxy,
         "--no-playlist" : True,
     }
 
     ydl = youtube_dl.YoutubeDL(ydl_opts)
     
-    print(proxy['ip'])
+    print(ytdlProxy)
 
     with ydl:
         result = ydl.extract_info(
