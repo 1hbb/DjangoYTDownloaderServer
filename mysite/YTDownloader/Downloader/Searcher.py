@@ -3,6 +3,7 @@ import re
 import json
 from django.http import JsonResponse
 from .RandomProxy import generateRandomProxy
+from urllib import parse
 
 
 def YoutubeSearcher(searchString):
@@ -11,7 +12,10 @@ def YoutubeSearcher(searchString):
     videoThumbs = []
     proxy = generateRandomProxy()
 
-    searchquery = "https://www.youtube.com/results?search_query=" + searchString
+    searchquery = "https://www.youtube.com/results?search_query=" + \
+        parse.quote_plus(str(searchString))
+
+    print(searchquery)
 
     proxy_support = urllib.request.ProxyHandler(
         {'http': "http://" + proxy['ip'] + ":" + proxy['port'], })
@@ -25,7 +29,7 @@ def YoutubeSearcher(searchString):
     for x in video_id:
         video_urls.append(videoUrlTemplate + x)
         videoThumbs.append("https://i.ytimg.com/vi/" + x + "/sd1.jpg")
-    
+
     result = {
         'videoUrls': video_urls,
         'videoThumbs': videoThumbs,
